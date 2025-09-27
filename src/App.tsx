@@ -1,24 +1,33 @@
 import React, { useState } from 'react';
-import Header from './components/Header';
-import ChatBot from './components/ChatBot';
-import Dashboard from './components/Dashboard';
-import Footer from './components/Footer';
+import INGRESHeader from './components/INGRESHeader';
+import INGRESNavigation from './components/INGRESNavigation';
+import ChatBotWidget from './components/ChatBotWidget';
+import MainContent from './components/MainContent';
+import INGRESFooter from './components/INGRESFooter';
 import LanguageProvider from './contexts/LanguageContext';
 import DataProvider from './contexts/DataContext';
+import ChatProvider from './contexts/ChatContext';
 
 function App() {
-  const [activeView, setActiveView] = useState<'dashboard' | 'chat'>('dashboard');
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <LanguageProvider>
       <DataProvider>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
-          <Header activeView={activeView} setActiveView={setActiveView} />
-          <main className="container mx-auto px-4 py-8">
-            {activeView === 'dashboard' ? <Dashboard /> : <ChatBot />}
-          </main>
-          <Footer />
-        </div>
+        <ChatProvider>
+          <div className="min-h-screen bg-white">
+            <INGRESHeader />
+            <INGRESNavigation />
+            <MainContent />
+            <INGRESFooter />
+            
+            {/* Floating ChatBot Widget */}
+            <ChatBotWidget 
+              isOpen={isChatOpen} 
+              onToggle={() => setIsChatOpen(!isChatOpen)} 
+            />
+          </div>
+        </ChatProvider>
       </DataProvider>
     </LanguageProvider>
   );
